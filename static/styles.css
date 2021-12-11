@@ -1,0 +1,303 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat";
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+body{
+    font-size: 1.6rem;
+
+}
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+nav a {
+    color: #fff;
+}
+h2 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+nav{
+    background: linear-gradient(135deg, hsla(221, 100%, 62%, 1),#ab45ff);
+
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.1)
+}
+
+.jumbotron {
+
+    background-image: url(jess-bailey-vKODbrxSEd0-unsplash.jpg);
+    min-height: 100vh;
+    height:100%;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    border-radius: 0px!important;
+    margin: 0;
+
+}
+.container-form {
+    background: #fff;
+    width: 90%;
+    max-width: 35rem;
+    border-radius: 2rem;
+    margin: 1rem auto;
+    padding: 2rem 0;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, hsla(221, 100%, 62%, 0.555),#ab45ffb6);
+}
+.intro{
+    margin-top: 6.5rem;
+    width: 100%;
+    height: 100%;
+}
+.background-img {
+    background-image: url(https://images.unsplash.com/photo-1505059152565-42971f574ade?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y296eSUyMGpvdXJuYWx8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60.jpg);
+    height: 100vh;
+    width: 100vh;
+}
+
+h3{
+    font-weight: bold;
+    font-size: 2rem;
+}
+.container-login {
+    width: 85%;
+    max-width: 40rem;
+    height: 40rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:2rem;
+    margin: 3.5rem auto;
+    flex-wrap: wrap;
+    padding: 2rem 0;
+    background-color: rgba(255, 255, 255, 0.925);
+    backdrop-filter: blur(5px);
+    box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.1);
+}
+.card-header-first{
+    background: linear-gradient(135deg, hsla(221, 100%, 62%, 1),#ab45ff);
+    margin-top: -7rem;
+    margin-left: auto;
+    margin-right: auto;
+    height: 6rem;
+    width: 25rem;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    display: flex;
+    text-align: center;}
+
+.card-section {
+   border-radius: 2rem;
+   margin: 3rem auto;
+   width: 90%;
+   height: 30rem;
+}
+
+.table-container {
+    width: 90%;
+    max-width: 120rem;
+    margin: 1rem auto;
+    max-height: 80vh;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+
+.contain_subjects {
+    width: 90%;
+    max-width: 60rem;
+    margin: 1rem auto;
+    max-height: 80vh;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+main img {
+    width: 100%;
+    max-width: 60rem;
+}
+
+
+.card-body {
+    text-align: center;
+    font-size: 1.9rem;
+    margin-top: 3rem;
+}
+.form-control
+{
+    /* Center form controls */
+    display: inline-block;
+    font-size: 2rem;
+    width: 100%;
+    max-width: 25rem;
+}
+.form-group {
+    width: 100%;
+}
+
+button .btn{
+    font-size: 1.8rem;
+    border-radius: 0.8rem;
+    border: none;
+}
+
+.btn-primary {
+    background: #3bdf8b;
+    border: #3bdf8b;
+    font-size: 1.8rem;
+}
+
+.btn-red {
+    background:#b84c5b;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+
+.btn-red:hover {
+    background:#db2d2d;
+    font-size: 1.8rem;
+    color: #fff;
+}
+.btn-blue:hover {
+    background:#068ec4;
+    font-size: 1.8rem;
+    color: #fff;
+}
+.btn-blue {
+    background:#079fce;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.btn-purple {
+    background: linear-gradient(135deg, hsla(221, 100%, 62%, 1),#ab45ff);
+    color: #fff;
+    font-size: 1.8rem;
+    border: none;
+}
+
+
+.btn-purple:hover {
+    background:#8934da;
+    font-size: 1.8rem;
+    color: #fff;
+}
+p {
+    width:90%;
+    max-width: 60rem;
+}
+
+main
+{
+    padding-top: 0.1rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.logo {
+    height:5rem;
+    margin: 0 1rem;
+}
+
+footer {
+    margin: 2rem auto;
+
+}
+
+.green {
+    background-color: rgb(100,255, 100, 0.6);
+}
+
+.green:hover {
+    background-color: rgb(10,150, 10, 0.6)
+}
+
+.yellow {
+    background-color: rgb(255,255, 100, 0.6);
+}
+
+.yellow:hover {
+    background-color: rgb(160,160, 30, 0.6);
+}
+
+.red {
+    background-color: rgb(255,100, 100, 0.6);
+}
+
+.red:hover {
+    background-color: rgb(150,50, 50, 0.6);
+}
+
+
+nav div ul li{
+    margin: 0 0.5rem;
+}
+
+nav div ul li i{
+    margin: 0 0.2rem;
+}
+
+td {
+    border-radius: 1rem;
+}
+
+/* Scrollbars */
+.table-container::-webkit-scrollbar, .contain_subjects::-webkit-scrollbar {
+    width: 5px;
+}
+
+.table-container::-webkit-scrollbar-track, .contain_subjects::-webkit-scrollbar-track {
+    background: rgb(243, 243, 243);
+}
+
+.table-container::-webkit-scrollbar-thumb, .contain_subjects::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgb(128, 168, 255),#c784fd);
+    opacity: 0.5;
+    border-radius: 20px;
+    border: 3px solid rgb(243, 243, 243);
+    
+}
+
+tr td:first-child form button {
+    width: 100%;
+}
+
+tr td:first-child form button:hover {
+    color: red;
+}
+/* hidden elements */
+#btn-done {
+    display: none;
+}
+
+#add-task-form {
+    display: none;
+}
+
+#add-subject-form {
+    display: none;
+}

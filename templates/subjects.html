@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My Subjects
+{% endblock %}
+
+{% block main %}
+    <h2>My Subjects</h2>
+    <div class="contain_subjects">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Difficulty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in subjects%}
+                    <tr>
+                        <td style="background-color: {{ row.color }};">{{ row.subject }}</td>
+                        <td>{{ row.difficulty }}</td>                        
+                        <td hidden> <form action="/delete-subject" method="post"><input type="text" hidden name="subject_id" value="{{row.id}}"><input type="submit"><input type="datetime-local" hidden></form></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+        <button class="btn btn-red" id="btn-delete-task">Delete Subject</button>
+        <button class="btn btn-red" id="btn-done">Cancel</button>
+        <button class="btn btn-purple" id="btn-add-task">Add Subject</button>
+
+        <div id="add-subject-form" class="container-form">
+            <h3>Add a New Subject</h3>
+            <form action="/add_subject" method="post">
+                <!-- name -->
+                <div class="form-group">
+                    <input type="text" name="subject" placeholder="Subject" autofocus autocomplete="off" required class="form-control">
+                </div>
+                
+                <!-- Difficulty -->
+                <div class="form-group">
+                    <select required name="difficulty" id="difficulty" name="difficulty"class="form-control">
+                        <option disabled selected value="">Difficulty</option>
+                        <option class="green" value="easy">Easy</option>
+                        <option class="yellow" value="medium">Medium</option>
+                        <option class="red" value="hard">Hard</option>
+                    </select>
+                </div>
+                
+                <!-- color -->
+                <div class="form-group">
+                    <label for="color">Pick a color</label>
+                    <input type="color" value="#4E73FF"name="color" id="color-input">
+                </div>
+
+                <button class="btn btn-primary"type="submit">Add</button>
+            </form>
+        </div>
+        
+
+{% endblock %}
