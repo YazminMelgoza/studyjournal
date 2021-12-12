@@ -51,27 +51,27 @@
 
         <div id="add-task-form" class="container-form">
             <h3>Add a new Task</h3>
-            <form action="/add-task" method="post">
+            <form action="/add_task" method="post">
                 <!-- Assignment -->
                 <div class="form-group">
                     <input type="text" name="assignment" placeholder="Assignment/Task"autofocus autocomplete="off" required class="form-control">
                 </div>
                 <!-- Subject -->
                 <div class="form-group">
-                <select name="subject" id="" class="form-control">
-                    <option disable selected value="">Subject</option>
+                <select required name="subject" id="" class="form-control">
+                    <option disabled selected value="">Subject</option>
                         {% for row in subjects%}
-                            <option style="background-color: {{ row.color }};" value="{{ row.subject }}">{{ row.subject }}</option>
+                            <option style="background-color: {{ row.color }}" value="{{ row.subject }}">{{ row.subject }}</option>
                         {% endfor %}
                 </select>
                 </div>
                 <!-- Deadline-->
                 <div class="form-group">
-                    <input type="date" class="form-control">
+                    <input name="deadline" required type="date" class="form-control">
                 </div>
                 <!-- Type -->
                 <div class="form-group">
-                    <select name="type" id="" class="form-control">
+                    <select required name="type" id="" class="form-control">
                         <option disable selected value="">Type</option>
                         <option  value="homework">Homework</option>
                         <option  value="exam">Exam</option>
@@ -83,7 +83,7 @@
                     </div>
                 <!-- Difficulty -->
                 <div class="form-group">
-                    <select name="type" id="difficulty" name="difficulty"class="form-control">
+                    <select required id="difficulty" name="difficulty"class="form-control">
                         <option disable selected value="">Difficulty</option>
                         <option class="green" value="easy">Easy</option>
                         <option class="yellow" value="medium">Medium</option>
@@ -92,7 +92,7 @@
                 </div>
                 <!-- Estimated Time -->
                 <div class="form-group">
-                    <input class="form-control"type="text" placeholder="Estimated Time HH:MM" title="Hours that you might spend on the task. Example: '01:30' is a valid input"pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" />
+                    <input required name="est_time" class="form-control"type="text" placeholder="Estimated Time HH:MM" title="Hours that you might spend on the task. Example: '01:30' is a valid input"pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" />
                 </div>
 
                 <button class="btn btn-primary"type="submit">Add</button>

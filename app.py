@@ -21,6 +21,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 DIFFICULTIES = ['hard','medium', 'easy']
 STATUSES = ['assigned', 'in progress', 'completed']
 not_allowed_characters = "<>{}#$^&*:;/!"
+TYPES = ['homework', 'exam', 'project', 'personal', 'lecture', 'other']
 
 # Ensure responses aren't cached
 @app.after_request
@@ -58,22 +59,26 @@ def index():
 def add_task():
     """Show tasks, add new ones and edit them"""
     # Gets columns per row in the database that are not completed
-    tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date = None", session["user_id"])
+    tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date = NULL", session["user_id"])
     if len(tasks) == 0:
         tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
     input_assignment = request.form.get("assignment")
     input_subject = request.form.get("subject")
     input_deadline = request.form.get("deadline")
-    input_type = request.form.get("deadline")
+    input_type = request.form.get("type")
     input_difficulty = request.form.get("difficulty")
     input_est_time = request.form.get("est_time")
 
     # Validates assignment
+    if not input_assignment:
+        return apology("Must enter an assignment")
     for character in input_assignment:
         if character in not_allowed_characters:
             return apology("This character '" + character + "' is not allowed")
 
     # Validates subject
+    if not input_subject:
+        return apology("Please enter a subject")
     rows_subject = db.execute("SELECT subject FROM subjects WHERE user_id = ?", session["user_id"])
     subjects = []
     for row in rows_subject:
@@ -82,32 +87,49 @@ def add_task():
     if not input_subject in subjects:
         return apology("Please register your subject before you use it")
 
+    # Validates deadline
+    print(input_deadline)
+    if not input_deadline:
+        return apology("Please enter a deadline")
+
+    # Validates type
+    if input_type not in TYPES:
+        return apology("Please enter a valid type from the select menu")
+    
+    # Validates difficulty
+    if input_difficulty not in DIFFICULTIES:
+        return apology("Select a valid difficulty")
+
     # Validates time
+    if not input_est_time:
+        return apology("please enter an estimated time")
     if not len(input_est_time) == 5:
         return apology("Invalid estimated time, must be HH:MM")
-    if not input_est_time[0] in ['1', '2']:
+    if not input_est_time[0] in ['0', '1', '2']:
         return apology("Invalid estimated time, use 24 hours format")
     if int(input_est_time[:1]) > 24:
         return apology("The maximum hours are 24")
 
     # inserts data into the database
-    db.execute("INSERT INTO tasks (user_id, assignment, subject, deadline, type, difficulty, est_time) VALUES (?, ?, ?, ?, ?, ?, ?)", session["user_id"])
+    db.execute("INSERT INTO tasks (user_id, assignment, subject, deadline, type, difficulty, est_time) VALUES (?, ?, ?, ?, ?, ?, ?)", session["user_id"], input_assignment, input_subject, input_deadline, input_type, input_difficulty, input_est_time)
     # redirects to index
     return redirect("/")
 
 @app.route("/delete_task", methods=["GET", "POST"])
 @login_required
 def delete_task():
-    """Show tasks, add new ones and edit them"""
-    # Gets columns per row in the database that are not completed
-    tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date = None", session["user_id"])
-    if len(tasks) == 0:
-        tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
+    """Delete a task by its id and user id"""    
+    # Gets input
+    input_task_id = request.form.get("task_id")
 
+    # Confirm its a valid id
+    if not len(db.execute("SELECT * FROM tasks WHERE id = ? AND user_id = ?", input_task_id, session["user_id"])) == 1:
+        return apology("You can't delete this task")
+    
+    # Deletes the task from database
+    db.execute("DELETE FROM tasks WHERE id = ? and user_id = ?", input_task_id, session["user_id"])
 
-    subjects = db.execute("SELECT * FROM subjects WHERE user_id = ? AND hide = 'false'", session["user_id"])
-    # passes portfolio to the template
-    return render_template("index.html", tasks=tasks, subjects=subjects)
+    return redirect('/')
 
 
 
