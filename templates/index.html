@@ -39,7 +39,7 @@
                         </td>
                         <td>{{ row.difficulty }}</td>
                         <td>{{ row.est_time}}</td>
-                        <td> <form action="/completed_task" method="post"><input type="text" hidden name="task_id" value="{{row.id}}"><input type="submit"><input type="datetime-local" hidden></form></td>
+                        <td> <form action="/complete_task" method="post"><input type="text" hidden name="task_id" value="{{row.id}}"><input type="submit"></form></td>
                     </tr>
                 {% endfor %}
             </tbody>

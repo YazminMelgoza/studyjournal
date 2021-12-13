@@ -1,6 +1,7 @@
 import os
 import requests
 import urllib.parse
+import datetime
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -62,3 +63,9 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+def validate_date(date):
+    try:
+        datetime.datetime.strptime(date, "%Y-%m-%d")
+    except ValueError:
+        return apology("Incorrect date format, should be YYYY-MM-DD")

@@ -9,7 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required, lookup, usd, validate_date
 
 # Configure application
 app = Flask(__name__)
@@ -106,6 +106,8 @@ def add_task():
     if not input_deadline:
         return apology("Please enter a deadline")
 
+    validate_date(input_deadline)
+
     # Validates type
     if input_type not in TYPES:
         return apology("Please enter a valid type from the select menu")
@@ -129,6 +131,7 @@ def add_task():
     # redirects to index
     return redirect("/")
 
+
 @app.route("/delete_task", methods=["GET", "POST"])
 @login_required
 def delete_task():
@@ -145,6 +148,53 @@ def delete_task():
 
     return redirect('/')
 
+
+@app.route("/update_status", methods=["GET", "POST"])
+@login_required
+def update_status():
+    """Update the status from an existing task"""
+    input_task_id = request.form.get("task_id")
+    input_status = request.form.get("input_status")
+
+    # Ensure both inputs are submitted
+    if not input_status or not input_task_id:
+        return apology("must provide a new status and a task")
+
+    # Validate input status
+    if not input_status in STATUSES:
+        return apology(str(input_status) + " is an invalid status")
+    
+    # Validate task id
+    rows_task = db.execute("SELECT * FROM tasks WHERE id = ? AND user_id = ?", input_task_id, session["user_id"])
+    if not len(rows_task) == 1:
+        return apology("You cannot update that task")
+
+    db.execute("UPDATE tasks SET status = ? WHERE id = ? AND user_id = ?", input_status, input_task_id, session["user_id"])
+
+    return redirect("/") 
+
+
+@app.route("/complete_task", methods=["POST"])
+@login_required
+def complete_task():
+    input_task_id = request.form.get("task_id")
+    
+    # Confirms data is submitted
+    if not input_task_id:
+        return apology("Couldn't find that task")
+    
+    # Validates input task id
+    if not len(db.execute("SELECT * FROM tasks WHERE id = ? AND user_id = ?", input_task_id, session["user_id"])) == 1:
+        return apology("Could't find that task :P")
+    
+    # Gets datetime
+    now = datetime.now()
+    dt_string = now.strftime("%Y/%m/%d %H:%M")
+    
+    # Update database. Since completed_date is not null, it wont be displayed in HTML file
+    db.execute("UPDATE tasks SET completed_date = ? WHERE id = ? AND user_id = ?", dt_string, input_task_id, session["user_id"])
+
+    return redirect("/")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -201,6 +251,7 @@ def subjects():
     subjects = db.execute("SELECT * FROM subjects WHERE user_id = ? AND hide = 'false'", session["user_id"])
     return render_template("subjects.html", subjects=subjects)
 
+
 @app.route("/add_subject", methods = ["GET", "POST"])
 @login_required
 def add_subject():
@@ -223,6 +274,7 @@ def add_subject():
 
     return redirect("/subjects")
 
+
 @app.route("/delete_subject", methods = ["GET", "POST"])
 @login_required
 def delete_subject():
@@ -238,30 +290,6 @@ def delete_subject():
 
     return redirect("/subjects")
 
-
-@app.route("/update_status", methods=["GET", "POST"])
-@login_required
-def update_status():
-    """Update the status from an existing task"""
-    input_task_id = request.form.get("task_id")
-    input_status = request.form.get("input_status")
-
-    # Ensure both inputs are submitted
-    if not input_status or not input_task_id:
-        return apology("must provide a new status and a task")
-
-    # Validate input status
-    if not input_status in STATUSES:
-        return apology(str(input_status) + " is an invalid status")
-    
-    # Validate task id
-    rows_task = db.execute("SELECT * FROM tasks WHERE id = ? AND user_id = ?", input_task_id, session["user_id"])
-    if not len(rows_task) == 1:
-        return apology("You cannot update that task")
-
-    db.execute("UPDATE tasks SET status = ? WHERE id = ? AND user_id = ?", input_status, input_task_id, session["user_id"])
-
-    return redirect("/") 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -298,7 +326,6 @@ def register():
 
     else:
         return render_template("register.html")
-
 
 
 def errorhandler(e):
