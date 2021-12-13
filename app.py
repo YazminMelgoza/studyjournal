@@ -46,11 +46,25 @@ def index():
     """Show tasks, add new ones and edit them"""
     # Gets columns per row in the database that are not completed
     tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date IS NULL", session["user_id"])
-    if len(tasks) == 0:
-        tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
 
     subjects = db.execute("SELECT * FROM subjects WHERE user_id = ? AND hide = 'false'", session["user_id"])
-    # passes portfolio to the template
+    # sets the list of status for each task
+    if len(tasks) != 0:
+        for task in tasks:
+            # Resets status list
+            select_status = ["assigned", "in progress", "completed"]
+            # Removes current status from the list
+            current_status = task["status"]
+            print(current_status)
+            select_status.remove(current_status.lower())
+            # Reinsert the current status at the beggining of the list
+            select_status.insert(0, current_status)
+            # Changes the value of the key to be the modified list
+            task['status'] = select_status
+    else:
+        tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
+
+    # passes variables to the template
     return render_template("index.html", tasks=tasks, subjects=subjects)
 
 
@@ -225,10 +239,28 @@ def delete_subject():
     return redirect("/subjects")
 
 
-@app.route("/completed_task")
-def completed_task():
-    """Register a completed task"""
+@app.route("/update_status", methods=["GET", "POST"])
+@login_required
+def update_status():
+    """Update the status from an existing task"""
+    input_task_id = request.form.get("task_id")
+    input_status = request.form.get("input_status")
+
+    # Ensure both inputs are submitted
+    if not input_status or not input_task_id:
+        return apology("must provide a new status and a task")
+
+    # Validate input status
+    if not input_status in STATUSES:
+        return apology(str(input_status) + " is an invalid status")
     
+    # Validate task id
+    rows_task = db.execute("SELECT * FROM tasks WHERE id = ? AND user_id = ?", input_task_id, session["user_id"])
+    if not len(rows_task) == 1:
+        return apology("You cannot update that task")
+
+    db.execute("UPDATE tasks SET status = ? WHERE id = ? AND user_id = ?", input_status, input_task_id, session["user_id"])
+
     return redirect("/") 
 
 @app.route("/register", methods=["GET", "POST"])

@@ -28,12 +28,13 @@
                         <td>{{ row.deadline }}</td>
                         <td>{{ row.type }}</td>
                         <td class="status">
-                            <form action="/update-status" method="post">
-                                <select onchange="this.form.submit()" name="status-select" class="form-control">
+                            <form action="/update_status" method="post">
+                                <select onchange="this.form.submit()" name="input_status" class="form-control">
                                     <option disable selected value="">{{ row.status[0] }}</option>
                                     <option value="{{ row.status[1] }}">{{ row.status[1] }}</option>
                                     <option value="{{ row.status[2] }}">{{ row.status[2] }}</option>                        
                                 </select>
+                                <input name = 'task_id' hidden value='{{ row.id }}'>
                             </form>
                         </td>
                         <td>{{ row.difficulty }}</td>
