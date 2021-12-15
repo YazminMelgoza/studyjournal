@@ -82,22 +82,21 @@ h3{
 }
 .container-login {
     width: 85%;
-    max-width: 40rem;
-    height: 40rem;
+    max-width: 35rem;
+    
     display:flex;
     justify-content: center;
     align-items: center;
     border-radius:2rem;
     margin: 3.5rem auto;
     flex-wrap: wrap;
-    padding: 2rem 0;
     background-color: rgba(255, 255, 255, 0.925);
     backdrop-filter: blur(5px);
     box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.1);
 }
 .card-header-first{
     background: linear-gradient(135deg, hsla(221, 100%, 62%, 1),#ab45ff);
-    margin-top: -7rem;
+    margin-top: -3rem;
     margin-left: auto;
     margin-right: auto;
     height: 6rem;
@@ -111,9 +110,9 @@ h3{
 
 .card-section {
    border-radius: 2rem;
-   margin: 3rem auto;
-   width: 90%;
-   height: 30rem;
+   width: 100%;
+   height: 100%
+   /* height: 30rem; */
 }
 
 .table-container {
@@ -144,7 +143,10 @@ main img {
 .card-body {
     text-align: center;
     font-size: 1.9rem;
-    margin-top: 3rem;
+    margin: 2rem 0;
+}
+.card-footer {
+    font-size: 1rem;
 }
 .form-control
 {
@@ -228,37 +230,32 @@ footer {
 
 }
 
-.green {
-    background-color: rgb(100,255, 100, 0.6);
+select.form-control.completed:focus, .green, .easy, .completed, option[value="completed"]{
+    background-color: rgb(157, 252, 157);
 }
 
-.green:hover {
-    background-color: rgb(10,150, 10, 0.6)
+.easy:hover, .completed:hover {
+    background-color: rgb(99, 190, 99)
 }
 
-.yellow {
-    background-color: rgb(255,255, 100, 0.6);
+select.form-control.progress:focus, .yellow, .medium, .progress, option[value="in progress"] {
+    background-color: rgb(253, 253, 144);
 }
 
-.yellow:hover {
-    background-color: rgb(160,160, 30, 0.6);
+.medium:hover, .progress:hover {
+    background-color: rgb(219, 219, 130);
 }
 
-.red {
-    background-color: rgb(255,100, 100, 0.6);
+select.form-control.assigned:focus, .red, .assigned, .hard, option[value="assigned"] {
+    background-color: rgb(250, 149, 149);
 }
 
-.red:hover {
-    background-color: rgb(150,50, 50, 0.6);
+.assigned:hover, .hard:hover {
+    background-color: rgb(179, 105, 105);
 }
-
 
 nav div ul li{
     margin: 0 0.5rem;
-}
-
-nav div ul li i{
-    margin: 0 0.2rem;
 }
 
 td {
@@ -267,7 +264,7 @@ td {
 
 /* Scrollbars */
 .table-container::-webkit-scrollbar, .contain_subjects::-webkit-scrollbar {
-    width: 5px;
+    width: 0.5rem;
 }
 
 .table-container::-webkit-scrollbar-track, .contain_subjects::-webkit-scrollbar-track {
@@ -277,13 +274,15 @@ td {
 .table-container::-webkit-scrollbar-thumb, .contain_subjects::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, rgb(128, 168, 255),#c784fd);
     opacity: 0.5;
-    border-radius: 20px;
-    border: 3px solid rgb(243, 243, 243);
+    border-radius: 2rem;
+    border: 0.3rem solid rgb(243, 243, 243);
     
 }
 
 tr td:first-child form button {
     width: 100%;
+    color:hsla(221, 100%, 62%, 1);
+    font-size: 2rem;
 }
 
 tr td:first-child form button:hover {
@@ -300,4 +299,79 @@ tr td:first-child form button:hover {
 
 #add-subject-form {
     display: none;
+}
+
+.deadline_td {
+    white-space: nowrap;
+}
+
+thead {
+    background: linear-gradient(135deg, hsla(221, 100%, 62%, 1),#ab45ff);
+    color: #FFF;
+    white-space: nowrap;
+}
+
+td {
+
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+}
+
+.subject_td {
+    padding: 0.5rem 2rem;
+}
+
+table {
+    width: 100%;
+    border-radius: 1rem;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+th {
+    padding: 1rem;
+}
+
+
+.contain-data {
+    border-radius: 0.8rem;
+    padding: 0.3rem 0.5rem; 
+}
+
+table .form-control {
+    color: #212529;
+    padding: 0;
+    height: 3rem;
+    font-size: 1.8rem;
+    border-radius: 0.8rem;
+    box-sizing: content-box;
+    width: 13rem;
+    border: none;
+}
+
+tbody tr:nth-child(even) {
+    background-color: white;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #e5ecfd;
+}
+
+i {
+    margin-right: 0.5rem;
+}
+
+tbody tr td:last-child button {
+    width: 100%;
+    color: #8833c0;
+    font-size: 2.5rem;
+}
+
+tbody tr td:last-child button:hover {
+    width: 100%;
+    color: #7be658;
+}
+
+nav button span i {
+    margin: 0;
 }

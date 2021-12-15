@@ -3,7 +3,6 @@
 <html lang="en">
 
     <head>
-
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, width=device-width">
 
@@ -38,18 +37,18 @@
                 <div class="collapse navbar-collapse" id="navbarText">
                   {% if session.user_id %}
                     <ul class="navbar-nav mr-auto">
-                      <li class="nav-item active"><a class="nav-link" href="/"><i class="fas fa-home"></i>Home</a></li>
+                      <li class="nav-item active"><a class="nav-link" href="/"><i class="fas fa-tasks"></i>My Tasks</a></li>
                       <li class="nav-item"><a class="nav-link" href="/subjects"><i class="fas fa-chalkboard-teacher"></i>My Subjects</a></li>
                       <li class="nav-item"><a class="nav-link" href="/focus"><i class="fas fa-stopwatch"></i>Focus</a></li>
                       <li class="nav-item"><a class="nav-link" href="/history"><i class="far fa-calendar-alt"></i>History</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
                     </ul>
                   {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register"><i class="fas fa-user-plus"></i>Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i>Log In</a></li>
                     </ul>
                   {% endif %}
                   </div>

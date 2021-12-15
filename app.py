@@ -60,12 +60,22 @@ def index():
             # Reinsert the current status at the beggining of the list
             select_status.insert(0, current_status)
             # Changes the value of the key to be the modified list
-            task['status'] = select_status
+            task["status"] = select_status
+
+            # Formats date to be more legible
+            deadline = datetime.strptime(task['deadline'], '%Y-%m-%d')
+            task["deadline"] = deadline.strftime('%d %b %Y')
+            # task['deadline'] = task["deadline"][8:] + '-' + task["deadline"][5:7] + '-' + task["deadline"][0:4]
     else:
         tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
-
+    # gets the dictionary of colors
+    rows_subjects = db.execute("SELECT subject, color FROM subjects WHERE user_id = ?", session["user_id"])
+    # Creates an empty dictionary to store: subject: color
+    colors = {}
+    for row in rows_subjects:
+        colors[row["subject"]] = row["color"]
     # passes variables to the template
-    return render_template("index.html", tasks=tasks, subjects=subjects)
+    return render_template("index.html", tasks=tasks, subjects=subjects, colors=colors)
 
 
 @app.route("/add_task", methods=["GET", "POST"])

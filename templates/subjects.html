@@ -17,8 +17,8 @@
             <tbody>
                 {% for row in subjects%}
                     <tr>
-                        <td style="background-color: {{ row.color }}">{{ row.subject }}</td>
-                        <td>{{ row.difficulty }}</td>                        
+                        <td class="subject_td" style="background-color: {{ row.color }}">{{ row.subject }}</td>
+                        <td >{{ row.difficulty }}</td>                        
                         <td hidden> <form action="/delete-subject" method="post"><input type="text" hidden name="subject_id" value="{{row.id}}"><input type="submit"><input type="datetime-local" hidden></form></td>
                     </tr>
                 {% endfor %}
@@ -26,9 +26,9 @@
         </table>
     </div>
 
-        <button class="btn btn-red" id="btn-delete-subject">Delete Subject</button>
+        <button class="btn btn-red" id="btn-delete-subject"><i class="fas fa-minus-circle"></i>Delete Subject</button>
         <button class="btn btn-red" id="btn-done">Cancel</button>
-        <button class="btn btn-purple" id="btn-add-task">Add Subject</button>
+        <button class="btn btn-purple" id="btn-add-task"><i class="fas fa-plus-circle"></i>Add Subject</button>
 
         <div id="add-subject-form" class="container-form">
             <h3>Add a New Subject</h3>

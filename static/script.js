@@ -15,7 +15,7 @@ $(function(){
         });
 
         // hide delete element
-        $("#btn-delete-task").hide();
+        $("#btn-delete-subject").hide();
         // show -done- button
         $("#btn-done").show();
 
@@ -52,6 +52,37 @@ $(function(){
         $("tr td:first-child").remove()
         $("#btn-done").hide();
         $("#btn-delete-task").show();
+        $("#btn-delete-subject").show();
+    });
+
+    // Input: background hexcolor, output: font color 
+    function getContrast(rgbcolor){
+        rgbcolor = rgbcolor.replace('rgb(', '');
+        rgbcolor = rgbcolor.replace(')', '');
+
+        var array = JSON.parse("[" + rgbcolor + "]");
+        var r = array[0];
+        var g = array[1];
+        var b = array[2];
+        var yiq = (((r*299)+(g*587)+(b*114))/1000);
+        return (yiq >= 170) ? 'black' : 'white';
+    }
+    
+    $('.subject_td>div').each(function() {
+        var bgcolor = $(this).css('backgroundColor');
+
+        console.log(bgcolor)
+        var fontcolor = getContrast(bgcolor);
+
+        $(this).css("color", fontcolor);
+    });
+    
+    $('.subject_td').each(function() {
+        var bgcolor = $(this).css('backgroundColor');
+        console.log(bgcolor)
+        var fontcolor = getContrast(bgcolor);
+
+        $(this).css("color", fontcolor);
     });
 
     
