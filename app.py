@@ -7,12 +7,13 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
+from flask_cors import CORS
 
-
-from helpers import apology, login_required, lookup, usd, validate_date
+from helpers import apology, login_required, validate_date
 
 # Configure application
 app = Flask(__name__)
+CORS(app)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -29,6 +30,7 @@ def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
+    response.headers["Access-Control-Allow-Origin"] = "*"
     return response
 
 # Configure session to use filesystem (instead of signed cookies)
@@ -337,6 +339,48 @@ def register():
     else:
         return render_template("register.html")
 
+
+@app.route("/focus", methods=["GET", "POST"])
+@login_required
+def focus():
+    if request.method == "POST":
+        pass
+    else:
+        # Get rows of tasks from the database
+        tasks = db.execute("SELECT * FROM tasks WHERE user_id = ?", session["user_id"])
+        return render_template("focus.html", tasks=tasks)
+
+
+@app.route("/history")
+@login_required
+def history():
+    return render_template("history.html")
+
+
+@app.route("/ajax_studylog", methods = ["POST"])
+@login_required
+def ajax_studylog():
+    if request.json:    
+        # Get inputs from the user
+        duration = request.json['duration']
+        task_id = request.json['task_id']
+
+        # Get formatted date
+        d = datetime.now()
+        date = d.strftime("%Y-%m-%d")
+
+        # Insert into database
+        db.execute("INSERT INTO studylog (user_id, task_id, date, duration) VALUES (?, ?, ?, ?)", session["user_id"], task_id, date, duration)
+        return jsonify("Studylog submitted succesfully")
+    else:
+        return jsonify("Couldn't submit studylog")
+
+
+@app.route("/ajax_tasks", methods = ["GET"])
+@login_required
+def ajax_tasks():
+    tasks = db.execute("SELECT id, assignment, subject, est_time FROM tasks WHERE user_id = ? AND completed_date IS NULL", session["user_id"])
+    return jsonify(tasks)
 
 def errorhandler(e):
     """Handle error"""

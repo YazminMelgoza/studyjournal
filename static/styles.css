@@ -372,6 +372,58 @@ tbody tr td:last-child button:hover {
     color: #7be658;
 }
 
-nav button span i {
+nav button span i, button.circle i {
     margin: 0;
+}
+
+button.circle {
+    border-radius: 50%;
+    font-size: 2rem;
+    height: 5rem;
+    width: 5rem;
+    margin: 1rem 0.5rem;
+    border: 0.3rem solid white;
+    color: white;
+    background-color: hsla(221, 100%, 62%, 1); 
+    transition: background-color 0.2s ease-in; 
+}
+
+button.circle.play i {
+    padding-left: 0.5rem;
+}
+
+button.circle:hover {
+    background-color: hsl(221, 63%, 44%); 
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.9);
+}
+
+button:focus {
+    outline: none;
+}
+p {
+    margin: 0 auto;
+}
+
+.pause {
+    display: none;
+}
+.stop {
+    display: none;
+}
+
+button[disabled="disabled"].circle{
+    background-color: #999;
+    cursor: default;
+}
+
+button[disabled="disabled"]:active{
+    transform: none;
+}
+
+#display {
+    font-size: 4rem;
 }

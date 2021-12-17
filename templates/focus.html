@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Focus
+{% endblock %}
+
+{% block head %}
+    <script src="static/stopwatch.js"></script>
+{% endblock %}
+
+{% block main %}
+    <h2>Focus Now</h2>
+    <h3>Let's get things done</h3>
+    <!-- Select task -->
+    <form action="" method= "Post">
+        <select required name="" id="">
+            <option disabled selected value="">Select a Task</option>
+            {% for task in tasks%}
+                <option value="{{task.id}}">{{task.assignment}} {{task.subject}}</option>
+            {% endfor %}
+        </select>    
+        <button type="submit">Confirm</button>
+    </form>
+    <!-- Cronometer -->
+    <div class="contain-chron">
+
+        <div id="display">
+            00:00:00
+        </div>
+        
+    </div>
+    <!-- Controls -->
+    <div class="buttons">
+        <button class="play circle"><i class="fas fa-play"></i></button>
+        <button class="pause circle"><i class="fas fa-pause"></i></button>
+        <button class="stop circle"><i class="fas fa-stop"></i></button>    
+    </div>
+
+    <!-- message -->
+    <p class="message"></p>
+{% endblock %}
