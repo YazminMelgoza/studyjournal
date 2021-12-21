@@ -347,7 +347,7 @@ def focus():
         pass
     else:
         # Get rows of tasks from the database
-        tasks = db.execute("SELECT * FROM tasks WHERE user_id = ?", session["user_id"])
+        tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date IS NULL", session["user_id"])
         return render_template("focus.html", tasks=tasks)
 
 

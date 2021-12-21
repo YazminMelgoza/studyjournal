@@ -306,7 +306,7 @@ tr td:first-child form button:hover {
 }
 
 thead {
-    background: linear-gradient(135deg, hsla(221, 100%, 62%, 1),#ab45ff);
+    background: linear-gradient(135deg, #3d7bff, #ab45ff);
     color: #FFF;
     white-space: nowrap;
 }
@@ -316,28 +316,22 @@ td {
     border-radius: 0;
     padding: 0.5rem 1rem;
 }
-
 .subject_td {
     padding: 0.5rem 2rem;
 }
-
 table {
     width: 100%;
     border-radius: 1rem;
     border-collapse: collapse;
     overflow: hidden;
 }
-
 th {
     padding: 1rem;
 }
-
-
 .contain-data {
     border-radius: 0.8rem;
     padding: 0.3rem 0.5rem; 
 }
-
 table .form-control {
     color: #212529;
     padding: 0;
@@ -348,15 +342,12 @@ table .form-control {
     width: 13rem;
     border: none;
 }
-
 tbody tr:nth-child(even) {
     background-color: white;
 }
-
 tbody tr:nth-child(odd) {
     background-color: #e5ecfd;
 }
-
 i {
     margin-right: 0.5rem;
 }
@@ -384,7 +375,7 @@ button.circle {
     margin: 1rem 0.5rem;
     border: 0.3rem solid white;
     color: white;
-    background-color: hsla(221, 100%, 62%, 1); 
+    background-color: #3d7bff; 
     transition: background-color 0.2s ease-in; 
 }
 
@@ -393,7 +384,7 @@ button.circle.play i {
 }
 
 button.circle:hover {
-    background-color: hsl(221, 63%, 44%); 
+    background-color: #2a56b7; 
     cursor: pointer;
 }
 
@@ -426,4 +417,61 @@ button[disabled="disabled"]:active{
 
 #display {
     font-size: 4rem;
+}
+
+.svg-container {
+    width: 95%;
+    max-width: 40rem;
+    margin: 2rem auto;
+    display: block;
+    position: relative;
+
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+.contain-chron {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+}
+
+
+.controls {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+}
+svg .animatedCircle{
+    stroke-dasharray: 754;
+    stroke-dashoffset: 754;
+    animation: dash 30s linear forwards;
+    animation-play-state: paused;
+}
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+
+.message {
+    background: linear-gradient(135deg, #ffffff, #dee6f8);
+    color: #000;
+    font-size: 2.3rem;
+    margin: 0 auto;
+    width: max-content;
+    max-width: 100%;
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, 0.1);
+
+}
+.message:empty {
+    display: none;
 }

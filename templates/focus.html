@@ -12,30 +12,45 @@
     <h2>Focus Now</h2>
     <h3>Let's get things done</h3>
     <!-- Select task -->
-    <form action="" method= "Post">
-        <select required name="" id="">
-            <option disabled selected value="">Select a Task</option>
-            {% for task in tasks%}
-                <option value="{{task.id}}">{{task.assignment}} {{task.subject}}</option>
-            {% endfor %}
-        </select>    
-        <button type="submit">Confirm</button>
-    </form>
-    <!-- Cronometer -->
-    <div class="contain-chron">
+    <div class="container-form">
+        <form action="" method= "Post">
+            <select class="form-control" required name="taskid" >
+                <option disabled selected value="">Select a Task</option>
+                {% for task in tasks%}
+                    <option value="{{task.id}}">{{task.assignment}} {{task.subject}}</option>
+                {% endfor %}
+            </select>    
+            <button class="btn btn-primary" type="submit">Confirm</button>
+        </form>
+    
+    </div>
 
-        <div id="display">
-            00:00:00
+    <div class="svg-container">
+        <svg viewBox="0 0 250 250">
+            <defs>
+                <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#3d7bff"/>
+                    <stop offset="100%" stop-color="#ab45ff"/>
+                </linearGradient>
+            </defs>
+            <circle class="defaultCircle" cx="125" cy="125" r="120" stroke="#bba4fa" stroke-width="10" fill="transparent" stroke-linecap="round"/>
+            <circle class="animatedCircle" cx="125" cy="125" r="120" stroke="url(#linear)" stroke-width="10" fill="transparent" stroke-linecap="round"></circle>
+        </svg>
+        <div class="contain-chron">
+            <div id="display">
+                00:00:00
+            </div>
         </div>
-        
+        <!-- Controls -->
+        <div class="controls">
+            <button class="play circle"><i class="fas fa-play"></i></button>
+            <button class="pause circle"><i class="fas fa-pause"></i></button>
+            <button class="stop circle"><i class="fas fa-stop"></i></button>    
+        </div>
+    
     </div>
-    <!-- Controls -->
-    <div class="buttons">
-        <button class="play circle"><i class="fas fa-play"></i></button>
-        <button class="pause circle"><i class="fas fa-pause"></i></button>
-        <button class="stop circle"><i class="fas fa-stop"></i></button>    
-    </div>
-
     <!-- message -->
-    <p class="message"></p>
+    <div class="contain-message">
+        <p class="message"></p>
+    </div>
 {% endblock %}
