@@ -6,10 +6,10 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from flask_cors import CORS
 
-from helpers import apology, login_required, validate_date
+from helpers import apology, login_required, validate_date, weekList, monthList, get_total_hours, get_total_tasks, convert_hour_to_num
 
 # Configure application
 app = Flask(__name__)
@@ -47,31 +47,30 @@ db = SQL("sqlite:///studyjournal.db")
 def index():
     """Show tasks, add new ones and edit them"""
     # Gets columns per row in the database that are not completed
-    tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date IS NULL", session["user_id"])
+    tasks = db.execute("SELECT tasks.id, tasks.user_id, assignment, subjects.subject, deadline, duration, status, tasks.difficulty, subjects.difficulty subject_difficulty, type FROM tasks JOIN subjects ON tasks.subject_id = subjects.id WHERE tasks.user_id = ? AND completed_date IS NULL ORDER BY CASE WHEN status = 'completed' THEN 1 END, deadline, CASE WHEN subject_difficulty = 'hard' THEN 1 WHEN subject_difficulty = 'medium' THEN 2 WHEN subject_difficulty = 'easy' THEN 3 END, CASE WHEN tasks.difficulty = 'hard' THEN 1 WHEN tasks.difficulty = 'medium' THEN 2 WHEN tasks.difficulty = 'easy' THEN 3 END, CASE WHEN status = 'assigned' THEN 1 WHEN status = 'in progress' THEN 2 WHEN status = 'completed' THEN 3 END, duration DESC", session["user_id"])
 
-    subjects = db.execute("SELECT * FROM subjects WHERE user_id = ? AND hide = 'false'", session["user_id"])
+    subjects = db.execute("SELECT * FROM subjects WHERE user_id = ?", session["user_id"])
+
     # sets the list of status for each task
-    if len(tasks) != 0:
-        for task in tasks:
-            # Resets status list
-            select_status = ["assigned", "in progress", "completed"]
-            # Removes current status from the list
-            current_status = task["status"]
-            print(current_status)
-            select_status.remove(current_status.lower())
-            # Reinsert the current status at the beggining of the list
-            select_status.insert(0, current_status)
-            # Changes the value of the key to be the modified list
-            task["status"] = select_status
+    for task in tasks:
+        # Resets status list
+        select_status = ["assigned", "in progress", "completed"]
+        # Removes current status from the list
+        current_status = task["status"]
+        select_status.remove(current_status.lower())
 
-            # Formats date to be more legible
-            deadline = datetime.strptime(task['deadline'], '%Y-%m-%d')
-            task["deadline"] = deadline.strftime('%d %b %Y')
-            # task['deadline'] = task["deadline"][8:] + '-' + task["deadline"][5:7] + '-' + task["deadline"][0:4]
-    else:
-        tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
+        # Reinsert the current status at the beggining of the list
+        select_status.insert(0, current_status)
+        # Changes the value of the key to be the modified list
+        task["status"] = select_status
+
+        # Formats date to be more legible
+        deadline = datetime.strptime(task['deadline'], '%Y-%m-%d')
+        task["deadline"] = deadline.strftime('%d %b %Y')
+        
     # gets the dictionary of colors
     rows_subjects = db.execute("SELECT subject, color FROM subjects WHERE user_id = ?", session["user_id"])
+
     # Creates an empty dictionary to store: subject: color
     colors = {}
     for row in rows_subjects:
@@ -83,13 +82,9 @@ def index():
 @app.route("/add_task", methods=["GET", "POST"])
 @login_required
 def add_task():
-    """Show tasks, add new ones and edit them"""
-    # Gets columns per row in the database that are not completed
-    tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date = NULL", session["user_id"])
-    if len(tasks) == 0:
-        tasks.append({"id": 37, "assignment": "study", "subject": 'matematicas', 'deadline': 'today', "type": 'homework', 'difficulty':'easy', 'status':['Assigned', 'In Progress', 'Completed'], 'est_time': '1 hour'})
+    """ add new tasks to the database and validates input"""
     input_assignment = request.form.get("assignment")
-    input_subject = request.form.get("subject")
+    input_subject_id = request.form.get("subject_id")
     input_deadline = request.form.get("deadline")
     input_type = request.form.get("type")
     input_difficulty = request.form.get("difficulty")
@@ -103,14 +98,16 @@ def add_task():
             return apology("This character '" + character + "' is not allowed")
 
     # Validates subject
-    if not input_subject:
+    if not input_subject_id:
         return apology("Please enter a subject")
-    rows_subject = db.execute("SELECT subject FROM subjects WHERE user_id = ?", session["user_id"])
+    rows_subject = db.execute("SELECT subject, id FROM subjects WHERE user_id = ?", session["user_id"])
     subjects = []
+    subjects_id = []
     for row in rows_subject:
         subjects.append(row["subject"])
+        subjects_id.append(int(row["id"]))
 
-    if not input_subject in subjects:
+    if not int(input_subject_id) in subjects_id:
         return apology("Please register your subject before you use it")
 
     # Validates deadline
@@ -139,7 +136,7 @@ def add_task():
         return apology("The maximum hours are 24")
 
     # inserts data into the database
-    db.execute("INSERT INTO tasks (user_id, assignment, subject, deadline, type, difficulty, est_time) VALUES (?, ?, ?, ?, ?, ?, ?)", session["user_id"], input_assignment, input_subject, input_deadline, input_type, input_difficulty, input_est_time)
+    db.execute("INSERT INTO tasks (user_id, assignment, subject_id, deadline, type, difficulty, duration) VALUES (?, ?, ?, ?, ?, ?, ?)", session["user_id"], input_assignment, input_subject_id, input_deadline, input_type, input_difficulty, input_est_time)
     # redirects to index
     return redirect("/")
 
@@ -260,7 +257,7 @@ def logout():
 @login_required
 def subjects():
     """Show list of subjects"""
-    subjects = db.execute("SELECT * FROM subjects WHERE user_id = ? AND hide = 'false'", session["user_id"])
+    subjects = db.execute("SELECT * FROM subjects WHERE user_id = ?", session["user_id"])
     return render_template("subjects.html", subjects=subjects)
 
 
@@ -272,7 +269,7 @@ def add_subject():
 
     for character in input_subject:
         if character in not_allowed_characters :
-            return apology("Those symbols are not allowed")
+            return apology("Character " + character + " is not allowed")
     
     input_difficulty = request.form.get("difficulty")
 
@@ -340,21 +337,37 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/focus", methods=["GET", "POST"])
+@app.route("/focus", methods=["GET"])
 @login_required
 def focus():
-    if request.method == "POST":
-        pass
-    else:
-        # Get rows of tasks from the database
-        tasks = db.execute("SELECT * FROM tasks WHERE user_id = ? AND completed_date IS NULL", session["user_id"])
-        return render_template("focus.html", tasks=tasks)
+    # Get rows of tasks from the database
+    tasks = db.execute("SELECT a.id, a.assignment, a.duration, b.subject, b.color FROM tasks a JOIN subjects b ON a.subject_id = b.id WHERE a.user_id = ? AND completed_date IS NULL AND a.status != 'completed' ORDER BY deadline, CASE WHEN b.difficulty = 'hard' THEN 1 WHEN b.difficulty = 'medium' THEN 2 WHEN b.difficulty = 'easy' THEN 3 END, duration DESC", session["user_id"])
+    return render_template("focus.html", tasks=tasks)
 
 
 @app.route("/history")
 @login_required
 def history():
-    return render_template("history.html")
+    # A) hours studied
+    # 1.-today
+    today = date.today()
+    week = weekList()
+    month = monthList()
+
+    hoursWeek = get_total_hours(week)
+    hoursToday = get_total_hours([str(today)])
+    hoursMonth = get_total_hours(month)
+
+    hours_studied = {"today": hoursToday, "week": hoursWeek, "month": hoursMonth }
+    
+    tasksWeek  = get_total_tasks(week)
+    tasksToday = get_total_tasks([str(today)])
+    tasksMonth = get_total_tasks(month)
+
+    tasks = {'today': tasksToday, "week": tasksWeek, "month": tasksMonth}
+
+    completed_tasks = db.execute("SELECT a.id, assignment, b.subject, a.deadline, duration, a.difficulty, a.type, a.completed_date, b.color FROM tasks a JOIN subjects b ON a.subject_id = b.id WHERE a.user_id = ? AND a.completed_date IS NOT NULL ORDER BY a.completed_date DESC", session["user_id"])
+    return render_template("history.html", hours=hours_studied, tasks = tasks, completed_tasks=completed_tasks)
 
 
 @app.route("/ajax_studylog", methods = ["POST"])
@@ -379,8 +392,42 @@ def ajax_studylog():
 @app.route("/ajax_tasks", methods = ["GET"])
 @login_required
 def ajax_tasks():
-    tasks = db.execute("SELECT id, assignment, subject, est_time FROM tasks WHERE user_id = ? AND completed_date IS NULL", session["user_id"])
+    tasks = db.execute("SELECT a.id, assignment, b.subject, duration FROM tasks a JOIN subjects b ON a.subject_id = b.id WHERE a.user_id = ? AND a.completed_date IS NULL", session["user_id"])
     return jsonify(tasks)
+
+
+@app.route("/getChartData", methods = ["GET"])
+@login_required
+def getChartData():
+    """Gets the number of hours studied by the user in the last 7 days"""
+    # List to store the chart's column [column1, column2,... ]
+    dataList = [['Day', 'Hours']]
+    
+    # stores the days in the week in a list
+    week = list(reversed(weekList()))
+
+    for day in week:
+        # list of dictionaries [{'duration':  }, {}, ...]
+        rows = db.execute("SELECT duration FROM studylog WHERE user_id = ? AND date = ? ", session["user_id"], day)
+        
+        # Initializes sum to 0:00:00
+        hours = timedelta()
+        for row in rows:
+            timestring = row['duration']
+            (h, m, s) = timestring.split(":")
+            d = timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+            hours += d
+        hours = convert_hour_to_num(str(hours))
+        #stores date, hours in the dataList
+        dataList.append([day, hours])
+
+    return jsonify(dataList)
+
+@app.route("/generate_chart2", methods = ["GET"])
+@login_required
+def chart2():
+    pass
+
 
 def errorhandler(e):
     """Handle error"""

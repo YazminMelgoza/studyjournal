@@ -1,29 +1,87 @@
 {% extends "layout.html" %}
 
+{% block head %}
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="static/charts.js"></script>
+{% endblock%}
+
 {% block title %}
     History
 {% endblock %}
 
 {% block main %}
-    <h2>My History</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Symbol</th>
-                    <th>Shares</th>
-                    <th>Price</th>
-                    <th>Transacted</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in history%}
-                    <tr>
-                        <td>{{ row.symbol }}</td>
-                        <td>{{ row.shares }}</td>
-                        <td>{{ row.price }}</td>
-                        <td>{{ row.date }}</td>
+    <h2>Your performance</h2>
+        <div class="contain-flex">
+            <div class="box text" id="general">
+                Hours studied:
+                <table class='data' id='table-general'>
+                    <tbody>
+                        <tr class="stats">
+                            <td>{{hours.today}}</td>
+                            <td>{{hours.week}}</td>
+                            <td>{{hours.month}}</td>
+                        </tr>
+                        <tr>
+                            <td>hours today</td>
+                            <td>hours this week</td>
+                            <td>hours this month</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            <div class="box" id="completed-stats">
+                Finished tasks:
+                <table class='data' id='table-completed'>
+                    <tbody>
+
+                    </tbody>
+                    <tr class="stats">
+                        <td>{{tasks.today}}</td>
+                        <td>{{tasks.week}}</td>
+                        <td>{{tasks.month}}</td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    <tr>
+                        <td>tasks today</td>
+                        <td>tasks this week</td>
+                        <td>tasks this month</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="box" id="my-week">
+                <div id="myColumnChart"></div>
+            </div>
+            <div class="box" id="piechart">
+                piechart from google
+            </div>
+        </div>
+        <div class="table-container">
+            <div id="completed-tasks">
+                <h3>Here are all your finished tasks</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Subject</th>
+                            <th>Type</th>
+                            <th>Difficulty</th>
+                            <th>Completed date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in completed_tasks%}
+                            <tr>
+                                <td>{{ row.assignment }}</td>
+                                <td>{{ row.subject}}</td>
+                                <td>{{ row.type}}</td>
+                                <td>{{ row.difficulty}}</td>
+                                <td>{{ row.completed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 {% endblock %}

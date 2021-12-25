@@ -17,7 +17,7 @@
             <select class="form-control" required name="taskid" >
                 <option disabled selected value="">Select a Task</option>
                 {% for task in tasks%}
-                    <option value="{{task.id}}">{{task.assignment}} {{task.subject}}</option>
+                    <option style="background-color: {{task.color}}"value="{{task.id}}">{{task.assignment}} {{task.subject}}</option>
                 {% endfor %}
             </select>    
             <button class="btn btn-primary" type="submit">Confirm</button>

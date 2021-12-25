@@ -135,8 +135,8 @@ function getGoalSeconds(task_id){
             // checks if the id of that task, matches the searched one
             let id = tasks[index].id;
             if (id == task_id){
-                // If found, get the duration (est_time)
-                totalTime = tasks[index].est_time;
+                // If found, get the duration 
+                totalTime = tasks[index].duration;
             }
         }
         // convert string of text, to seconds
@@ -200,8 +200,8 @@ $(function(){
                 // checks if the id of that task, matches the searched one
                 let id = tasks[index].id;
                 if (id == input_task_id){
-                    // If found, get the duration (est_time)
-                    totalTime = tasks[index].est_time;
+                    // If found, get the duration
+                    totalTime = tasks[index].duration;
                 }
             }
             // convert string of text, to seconds
@@ -232,7 +232,7 @@ $(function(){
     $(".play").click(function(){
 
         // starts running interval
-        interval = window.setInterval(stopwatch, 1000);
+        interval = window.setInterval(stopwatch, 10);
         
         // Starts animation
         $(".animatedCircle").css("animation-play-state", "running")
