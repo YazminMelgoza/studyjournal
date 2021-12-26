@@ -413,8 +413,8 @@ def getChartData():
         # Initializes sum to 0:00:00
         hours = timedelta()
         for row in rows:
-            timestring = row['duration']
-            (h, m, s) = timestring.split(":")
+            duration = row['duration']
+            (h, m, s) = duration.split(":")
             d = timedelta(hours=int(h), minutes=int(m), seconds=int(s))
             hours += d
         hours = convert_hour_to_num(str(hours))
@@ -423,10 +423,48 @@ def getChartData():
 
     return jsonify(dataList)
 
-@app.route("/generate_chart2", methods = ["GET"])
+
+@app.route("/getPieChartData", methods = ["GET"])
 @login_required
-def chart2():
-    pass
+def getPieChartData():
+    data_list = [['Task', 'Hours']]
+    color_dict = {}
+
+    today = str(date.today())
+    task_ids = db.execute("SELECT * FROM studylog WHERE user_id = ? AND date = ? GROUP BY task_id", session["user_id"], today)
+
+    task_list = [element['task_id'] for element in task_ids]
+
+    for index, task_id in enumerate(task_list): 
+        # Gets the data 
+        rows = db.execute("SELECT a.task_id, a.date, a.duration, b.assignment, c.subject, c.color FROM studylog a JOIN tasks b ON a.task_id = b.id JOIN subjects c ON b.subject_id = c.id WHERE a.user_id = ? AND a.task_id = ? AND a.date = ?", session["user_id"], task_id, today)
+        
+        # Declares variables
+        color = rows[0]['color']
+        assignment = rows[0]['assignment'] 
+        subject = rows[0]['subject']
+        task_name = assignment + " " + subject
+        hours = timedelta()
+
+        # Adds all the hours into a single variable
+        for row in rows:
+            duration = row['duration']
+            (h, m, s) = duration.split(":")
+            d = timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+            hours += d
+
+        # convert hours to number (float)
+        hours = convert_hour_to_num(str(hours))
+
+        # stores date, hours in the dataList
+        data_list.append([task_name, hours])
+        
+        # stores the color
+        color_dict[index] = {'color': color}
+
+    data_dict = {'data': data_list, 'slicesColor': color_dict}
+    
+    return jsonify(data_dict)
 
 
 def errorhandler(e):

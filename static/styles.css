@@ -489,7 +489,7 @@ svg .animatedCircle{
 div.box {
     flex-grow: 1;
     text-align:center;
-    height: 30rem;
+    height: 24rem;
     width: 50rem;   
     border-radius: 2rem;
     margin: 1rem;
@@ -509,18 +509,32 @@ div.box {
     background-color: #7be658;
 }
 #completed-stats{
-    width: 40rem;
+    width: max-content;
 
     background-color: #3bdf8b;
 }
 #my-week {
+    height: 40rem;
+    width: 45%;
+    min-width: 25rem;
     background-color: #3d7bff;
     /* color: #9c9bf1; */
 }
 #piechart {
     background-color: #ab45ff;
+    width: 45%;
+    min-width: 25rem;
+    height: 40rem;
 }
 
+#myPieChart {
+    width: 100%;
+    height: 100%;
+}
+#myColumnChart {
+    width: 100%;
+    height: 100%;
+}
 table.data tr:last-child > td{
     color: gray;
     font-size: 1.5rem;
@@ -534,6 +548,7 @@ table#table-completed tr.stats:first-child> td {
 
 table#table-general tr.stats:first-child > td {
     color: #7be658;
+    font-size: 3rem;
 }
 
 table.data tr.stats {
