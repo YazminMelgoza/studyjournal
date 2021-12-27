@@ -40,7 +40,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///studyjournal.db")
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 @login_required
 def index():
     """Show tasks, add new ones and edit them"""
@@ -64,7 +64,7 @@ def index():
 
         # Formats date to be more legible
         deadline = datetime.strptime(task['deadline'], '%Y-%m-%d')
-        task["deadline"] = deadline.strftime('%d %b %Y')
+        task["deadline"] = deadline.strftime('%a %d %b')
         
     # gets the dictionary of colors
     rows_subjects = db.execute("SELECT subject, color FROM subjects WHERE user_id = ?", session["user_id"])
