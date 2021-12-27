@@ -7,13 +7,11 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, date, timedelta
-from flask_cors import CORS
 
 from helpers import apology, login_required, validate_date, weekList, monthList, get_total_hours, get_total_tasks, convert_hour_to_num
 
 # Configure application
 app = Flask(__name__)
-CORS(app)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True

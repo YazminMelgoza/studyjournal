@@ -162,9 +162,6 @@ function ajax_studylog(duration, task_id){
         data: JSON.stringify({"duration": duration, "task_id": task_id }, null, "\t"),
         dataType: 'json',
         type: "POST",
-        success: function(response) {
-            console.log(response);
-        },
         error: function(error) {
             console.log(error);
         }
@@ -232,7 +229,7 @@ $(function(){
     $(".play").click(function(){
 
         // starts running interval
-        interval = window.setInterval(stopwatch, 10);
+        interval = window.setInterval(stopwatch, 1000);
         
         // Starts animation
         $(".animatedCircle").css("animation-play-state", "running")

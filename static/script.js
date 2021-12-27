@@ -58,6 +58,7 @@ $(function(){
     // Input: background hexcolor, output: font color 
     function getContrast(rgbcolor){
         rgbcolor = rgbcolor.replace('rgb(', '');
+        rgbcolor = rgbcolor.replace('rgba(', '')
         rgbcolor = rgbcolor.replace(')', '');
 
         var array = JSON.parse("[" + rgbcolor + "]");
@@ -67,24 +68,21 @@ $(function(){
         var yiq = (((r*299)+(g*587)+(b*114))/1000);
         return (yiq >= 170) ? 'black' : 'white';
     }
+
+    $('.subject_td').each(function() {
+        var bgcolor = $(this).css('backgroundColor');
+        var fontcolor = getContrast(bgcolor);
+
+        $(this).css("color", fontcolor);
+    });
     
     $('.subject_td>div').each(function() {
         var bgcolor = $(this).css('backgroundColor');
-
-        console.log(bgcolor)
         var fontcolor = getContrast(bgcolor);
 
         $(this).css("color", fontcolor);
     });
     
-    $('.subject_td').each(function() {
-        var bgcolor = $(this).css('backgroundColor');
-        console.log(bgcolor)
-        var fontcolor = getContrast(bgcolor);
-
-        $(this).css("color", fontcolor);
-    });
-
     
 })
 
