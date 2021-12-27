@@ -3,7 +3,7 @@
 #### Description:
 StudyJournal is a productivity tool for students. When students have a lot of responsabilities and tasks, many of us doesn't even know what to do first. StudyJournal automatically orders your tasks by priority, so you don't need to spend much time planning. 
 
-* Login/Register: Create yor personal Account
+* Login/Register: Create your personal Account
 * Tasks: Add and organize your tasks by priority
 * Subjects: Customize your subjects with a color of your preference 
 * Stopwatch: An implementation of the Reverse Pomodoro technique. Select a task from your list and start focusing 
@@ -26,7 +26,7 @@ First it imports some modules. You'll see that there's a module called datetime,
 Contains all the application routes, for GET requests, it may select query the database for  makes querys to the database to add or delete subjects/tasks and update tasks' status. 
 It also returns JSON data to the frontend via AJAX in the focus page. You'll see at almost the end of the file that there are several routes that send or get data.
 #### helpers.py
-The functions on this file were created because they are used several times in `app.py`
+The functions on this file were created because they are used several times in `app.py`. `monthList()` is a function that returns a list containing all the previous days of the current month. `weekList()` Returns a list of the last seven days starting from today. `get_total_hours(dates)` takes a list of days as input, and returns a string in the format "HH:MM:SS" which is the sum of all the hours studied in those input days. `get_total_tasks(dates)` takes a list of days as input as well, but it returns the amount of tasks finished in those days. `convert_hour_to_num(hour)` is used in `app.py` to convert an hour (string) to something that can actually be graphically represented in a chart.
 #### static/script.js
 Contains several functions used in `index.html`, `subjects.html`. There's one I would like to stand out. Since the user can enter a custom color for each subject, it would be a problem if text color was always white or always black, so I made this script to detect where to use black or white font color, If a subject has a darker color, the font would be white, else, it will be black. 
 #### static/stopwatch.js
@@ -35,9 +35,9 @@ Has the logic to implement a stopwatch, when to increment seconds, minutes and h
 This script is used in the history page and it uses the Google API to generate 2 charts (A column chart and a pie chart).
 First it gets the data from the backend, for the column chart it gets a list of the data rows, containg 'Day' and 'Hours'. Once it recieves a response, it generates the charts.
 ## Credits
-StudyJournal icon - [Rawand Dahnous](https://dribbble.com/alrawand)
-Background photo - [Jess Bailey](https://unsplash.com/@jessbaileydesigns?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
-Icons - [Font Awesome by Dave Gandy](http://fontawesome.io)
+* StudyJournal icon - [Rawand Dahnous](https://dribbble.com/alrawand)
+* Background photo - [Jess Bailey](https://unsplash.com/@jessbaileydesigns?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+* Icons - [Font Awesome by Dave Gandy](http://fontawesome.io)
 ## How to lauch Application
 1. Ensure you have installed Python 3 in your PC
 2. Clone the code: `git clone https://github.com/YazminMelgoza/studyjournal.git`
