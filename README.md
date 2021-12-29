@@ -1,5 +1,5 @@
 # StudyJournal
-#### Video Demo: <URL HERE>
+#### Video Demo: <URL https://youtu.be/CzvwcCazWqw>
 #### Description:
 StudyJournal is a productivity tool for students. When students have a lot of responsabilities and tasks, many of us doesn't even know what to do first. StudyJournal automatically orders your tasks by priority, so you don't need to spend much time planning. 
 
